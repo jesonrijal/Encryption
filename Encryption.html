@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Encryption</title>
+  <style>
+    html{
+        text-align:center;      
+      }
+      h1{
+        border-radius:10px;
+        padding:1rem;
+        width:25%;
+        margin-left:auto;
+        margin-right:auto;
+        box-shadow: 0px 0px 10px grey;
+      }
+      .main-content{
+        border-radius:10px;
+        padding:1rem;
+        width:25%;
+        margin-left:auto;
+        margin-right:auto;
+        box-shadow: 0px 0px 10px grey;
+      }
+      textarea{
+        margin:1rem;
+      }
+      .explanation{
+        color:gray;
+        margin:.5rem;
+        font-family:sans-serif;
+        font-size:.8rem;
+      }    
+    </style>
+</head>
+
+<body>
+  <h1>Encryption</h1>
+  <div class="main-content">
+    <div>Insert your text to convert:</div>
+
+    <div><textarea type="text" id="plainText">STarting Text !@#$%^&*(){</textarea></div>
+
+    <div><button id="convertButton" onclick="clickEvent()">Start</button></div>
+
+    <div class="explanation">Remove non-alpha characters and convert to lower case.</div>
+
+    <div><p id="convertedText">?</p></div>
+
+    <div class="explanation">Convert letters to numbers [0-25].</div>
+
+    <div><p id="numericArray">?</p></div>
+
+    <div class="explanation">Add the key to each number and mod 26.</div>
+
+    <div><p id="encryptedNumbers">?</p></div>
+
+    <div class="explanation">Convert encrypted numbers back to letters a-z.</div>
+
+    <div><p id="encryptedCharacters">?</p></div>
+
+    <div class="explanation">---</div>
+    <div class="explanation">Reverse the process to get the plain text</div>
+    <div class="explanation">---</div>
+    
+    <div class="explanation">Convert the letters to numbers [0-25]</div>
+
+    <div><p id="postencryptionNumbers">?</p></div>
+
+    <div class="explanation">Subtract the key and mod 26.</div>
+
+    <div><p id="decryptedNumbers">?</p></div>
+
+    <div class="explanation">Convert the numbers to letters a-z.</div>
+
+    <div><p id="decryptedCharacters">?</p></div>
+  </div>
+  <script>
+    function clickEvent() {
+      var startText;
+      var endText = "";
+      var numeric = [];
+      var encryptedNumbers = [];
+      var encryptedCharacters = "";
+      var postencryptionNumbers = [];
+      var decryptedNumbers = [];
+      var decryptedCharacters = "";
+      var key = 3;
+      //Do stuff
+      startText = document.getElementById("plainText").value.toLowerCase();
+      for (var i = 0; i < startText.length; i++) {
+        var c = startText[i];
+        if (/[a-z]/.test(c)) {
+          endText += c;
+        }
+      }
+      console.log("start:" + startText);
+      console.log("end:" + endText);
+      document.getElementById("convertedText").innerHTML = endText;
+      var numeric = [];
+      for (var i = 0; i < endText.length; i++) {
+        numeric.push(endText.charCodeAt(i) - "a".charCodeAt(0));
+      }
+      document.getElementById("numericArray").innerHTML = numeric;
+      for (var i = 0; i < numeric.length; i++) {
+        encryptedNumbers.push((numeric[i] + key) % 26);
+      }
+      document.getElementById("encryptedNumbers").innerHTML = encryptedNumbers;
+      for (var i = 0; i < encryptedNumbers.length; i++) {
+        encryptedCharacters += String.fromCharCode(encryptedNumbers[i] + "a".charCodeAt(0));
+      }
+      document.getElementById("encryptedCharacters").innerHTML = encryptedCharacters;
+      
+      for (var i = 0; i < encryptedCharacters.length; i++) {
+        postencryptionNumbers.push(encryptedCharacters.charCodeAt(i) - "a".charCodeAt(0));
+      }
+      document.getElementById("postencryptionNumbers").innerHTML = postencryptionNumbers;
+      for (var i = 0; i < postencryptionNumbers.length; i++) {
+        var decryptedNumber = postencryptionNumbers[i] - key;
+        if(decryptedNumber < 0)
+          decryptedNumber += 26;
+        decryptedNumbers.push(decryptedNumber);
+      }
+       
+      document.getElementById("decryptedNumbers").innerHTML = decryptedNumbers;
+      for (var i = 0; i < decryptedNumbers.length; i++) {
+        decryptedCharacters += String.fromCharCode(decryptedNumbers[i] + "a".charCodeAt(0));
+      }
+      document.getElementById("decryptedCharacters").innerHTML = decryptedCharacters;
+    }
+  </script>
+</body>
+
+</html>
